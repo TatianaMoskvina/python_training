@@ -5,11 +5,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
+import unittest, time
 
 class TestAddGroup(unittest.TestCase):
     def setUp(self):
-        self.wd = webdriver.Firefox()
+        self.wd = webdriver.Firefox(executable_path=r'/usr/local/bin/geckodriver')
         self.wd.implicitly_wait(30)
 
     
