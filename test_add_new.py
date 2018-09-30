@@ -15,25 +15,26 @@ class AddNew(unittest.TestCase):
         self.wd.implicitly_wait(30)
 
     def test_add_new(self):
-        wd = self.wd
-        self.open_home_page(wd)
-        self.login(wd, username="admin", password="secret")
-        self.open_add_new_address(wd)
-        self.create_new_address(wd, Address(first_name="Fname", midle_name="Mname", last_name="Lname", nick_name="NickName",
+        self.login(username="admin", password="secret")
+        self.open_add_new_address()
+        self.create_new_address(Address(first_name="Fname", midle_name="Mname", last_name="Lname", nick_name="NickName",
                                 company="Ant", addrs="123", home="123", mobile="123", work="1234", fax="12345",
                                 email="a@a.com"))
-        self.submit(wd)
-        self.logout(wd)
+        self.submit()
+        self.logout()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         # logout
         wd.find_element_by_link_text("Logout").click()
 
-    def submit(self, wd):
+    def submit(self):
+        wd = self.wd
         # submit address creation
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
 
-    def create_new_address(self, wd, address):
+    def create_new_address(self, address):
+        wd = self.wd
         # initial address creation
         wd.find_element_by_link_text("add new").click()
         # fill address form
@@ -74,11 +75,14 @@ class AddNew(unittest.TestCase):
         wd.find_element_by_name("email").clear()
         wd.find_element_by_name("email").send_keys(address.email)
 
-    def open_add_new_address(self, wd):
+    def open_add_new_address(self):
+        wd = self.wd
         # open add new address
         wd.find_element_by_id("container").click()
 
-    def login(self, wd, username, password):
+    def login(self, username, password):
+        wd = self.wd
+        self.open_home_page()
         # login
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
@@ -88,7 +92,8 @@ class AddNew(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
+        wd = self.wd
         # open home page
         wd.get("http://localhost/addressbook/index.php")
 
