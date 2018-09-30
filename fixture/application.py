@@ -11,6 +11,7 @@ class Application:
         # logout
         wd.find_element_by_link_text("Logout").click()
 
+
     def submit(self):
         wd = self.wd
         # submit address creation
@@ -18,6 +19,7 @@ class Application:
 
     def create_new_address(self, address):
         wd = self.wd
+        self.open_add_new_address()
         # initial address creation
         wd.find_element_by_link_text("add new").click()
         # fill address form
@@ -78,6 +80,39 @@ class Application:
     def open_home_page(self):
         wd = self.wd
         # open home page
+        wd.get("http://localhost/addressbook/index.php")
+
+
+    def return_to_group_page(self):
+        wd = self.wd
+        wd.find_element_by_link_text("group page").click()
+
+    def create_group(self, group):
+        wd = self.wd
+        self.open_group_name()
+        # initial group creation
+        wd.find_element_by_name("new").click()
+        # fill group form
+        wd.find_element_by_name("group_name").click()
+        wd.find_element_by_name("group_name").clear()
+        wd.find_element_by_name("group_name").send_keys(group.name)
+        wd.find_element_by_name("group_header").click()
+        wd.find_element_by_name("group_header").clear()
+        wd.find_element_by_name("group_header").send_keys(group.header)
+        wd.find_element_by_name("group_footer").click()
+        wd.find_element_by_name("group_footer").clear()
+        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        # submit group creation
+        wd.find_element_by_name("submit").click()
+        self.return_to_group_page()
+
+    def open_group_name(self):
+        wd = self.wd
+        wd.find_element_by_link_text("groups").click()
+
+
+    def open_homepage(self):
+        wd = self.wd
         wd.get("http://localhost/addressbook/index.php")
 
     def destroy(self):
