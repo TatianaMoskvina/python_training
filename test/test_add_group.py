@@ -6,6 +6,6 @@ def test_add_group(app):
     app.group.create(Group(name="GroupName", header="GroupHeader", footer="GroupFooter"))
     app.session.logout()
 
-
+#
 
 
