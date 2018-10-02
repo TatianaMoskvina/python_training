@@ -3,9 +3,5 @@ from model.group import Group
 
 def test_add_group(app):
     app.session.login(username="admin", password="secret")
-    app.group.create(Group(name="GroupName", header="GroupHeader", footer="GroupFooter"))
+    app.group.edit(Group(name="GroupName (edited)", header="GroupHeader (edited)", footer="GroupFooter (edited)"))
     app.session.logout()
-
-
-
-

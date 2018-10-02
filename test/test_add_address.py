@@ -10,4 +10,3 @@ def test_add_new(app):
     app.session.logout()
 
 
-#
