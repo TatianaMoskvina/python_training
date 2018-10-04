@@ -7,8 +7,7 @@ class AddressHelper:
         wd = self.app.wd
         self.open_add_new_address()
         wd.find_element_by_name("selected[]").click()
-        wd.find_element_by_xpath(
-            "(.//*[normalize-space(text()) and normalize-space(.)='a@a.com'])[1]/following::img[2]").click()
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(address.first_name)
