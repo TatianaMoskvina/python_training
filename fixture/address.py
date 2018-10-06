@@ -67,6 +67,7 @@ class AddressHelper:
 
     def delete_first_address(self):
         wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
         # select first address
         wd.find_element_by_name("selected[]").click()
         # submit deletion
