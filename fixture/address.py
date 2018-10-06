@@ -5,7 +5,7 @@ class AddressHelper:
 
     def edit(self, address):
         wd = self.app.wd
-        self.open_add_new_address()
+        self.open_home_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_address_form(address)
@@ -13,7 +13,7 @@ class AddressHelper:
 
     def create(self, address):
         wd = self.app.wd
-        self.open_add_new_address()
+        self.open_home_page()
         # initial address creation
         wd.find_element_by_link_text("add new").click()
         self.fill_address_form(address)
@@ -65,10 +65,10 @@ class AddressHelper:
             wd.find_element_by_name("email").clear()
             wd.find_element_by_name("email").send_keys(address.email)
 
-    def open_add_new_address(self):
+    def open_home_page(self):
         wd = self.app.wd
-        # open add new address
-        wd.find_element_by_id("container").click()
+        if not (wd.current_url.endswith("/index.php") and len(wd.find_elements_by_xpath("//input[@value='Send e-Mail']"))) >0:
+            wd.find_element_by_link_text("home").click()
 
     def submit(self):
         wd = self.app.wd
@@ -87,5 +87,5 @@ class AddressHelper:
 
     def count(self):
         wd = self.app.wd
-        self.open_add_new_address()
+        self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
