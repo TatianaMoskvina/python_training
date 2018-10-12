@@ -1,3 +1,5 @@
+from model.address import Address
+
 class AddressHelper:
 
     def __init__(self,app):
@@ -89,3 +91,13 @@ class AddressHelper:
         wd = self.app.wd
         self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+
+    def get_address_list(self):
+        wd = self.app.wd
+        self.open_home_page()
+        list_of_address = []
+        for element in wd.find_elements_by_name("entry"):
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            list_of_address.append(Address(id=id))
+        return list_of_address
