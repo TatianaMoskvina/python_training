@@ -98,6 +98,7 @@ class AddressHelper:
         self.open_home_page()
         list_of_address = []
         for element in wd.find_elements_by_name("entry"):
+            cells = element.find_elements_by_tag_name("td")
             id = element.find_element_by_name("selected[]").get_attribute("value")
-            list_of_address.append(Address(id=id))
+            list_of_address.append(Address(last_name=cells[1].text,first_name=cells[2].text, id=id))
         return list_of_address
