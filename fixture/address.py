@@ -5,10 +5,10 @@ class AddressHelper:
     def __init__(self,app):
         self.app = app
 
-    def edit(self, address):
+    def edit(self, address, index):
         wd = self.app.wd
         self.open_home_page()
-        wd.find_element_by_name("selected[]").click()
+        self.select_address_by_index(index)
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_address_form(address)
         self.address_cache = None
@@ -89,6 +89,20 @@ class AddressHelper:
         wd.switch_to_alert().accept()
         wd.find_element_by_link_text("home").click()
         self.address_cache = None
+
+    def delete_address_by_index(self, index):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
+        self.select_address_by_index(index)
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        wd.find_element_by_link_text("home").click()
+        self.address_cache = None
+
+    def select_address_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def count(self):
         wd = self.app.wd
