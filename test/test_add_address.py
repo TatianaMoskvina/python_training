@@ -8,8 +8,8 @@ def test_add_new(app):
                               email="a@a.com")
     app.address.create(address)
     app.address.submit()
+    assert len(old_addresses) + 1 == app.address.count()
     new_addresses = app.address.get_address_list()
-    assert len(old_addresses) + 1 == len(new_addresses)
     old_addresses.append(address)
     assert sorted(old_addresses, key=Address.id_or_max) == sorted(new_addresses, key=Address.id_or_max)
 

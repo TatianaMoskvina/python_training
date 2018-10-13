@@ -11,6 +11,7 @@ class AddressHelper:
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_address_form(address)
+        self.address_cache = None
 
 
     def create(self, address):
@@ -19,6 +20,7 @@ class AddressHelper:
         # initial address creation
         wd.find_element_by_link_text("add new").click()
         self.fill_address_form(address)
+        self.address_cache = None
 
     def fill_address_form(self, address):
         wd = self.app.wd
@@ -86,19 +88,22 @@ class AddressHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
         wd.find_element_by_link_text("home").click()
+        self.address_cache = None
 
     def count(self):
         wd = self.app.wd
         self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    address_cache = None
 
     def get_address_list(self):
-        wd = self.app.wd
-        self.open_home_page()
-        list_of_address = []
-        for element in wd.find_elements_by_name("entry"):
-            cells = element.find_elements_by_tag_name("td")
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            list_of_address.append(Address(last_name=cells[1].text,first_name=cells[2].text, id=id))
-        return list_of_address
+        if self.address_cache is None:
+            wd = self.app.wd
+            self.open_home_page()
+            self.address_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                cells = element.find_elements_by_tag_name("td")
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.address_cache.append(Address(last_name=cells[1].text,first_name=cells[2].text, id=id))
+        return list(self.address_cache)
