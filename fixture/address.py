@@ -9,7 +9,7 @@ class AddressHelper:
         wd = self.app.wd
         self.open_home_page()
         self.select_address_by_index(index)
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_elements_by_css_selector("img[alt='Edit']")[index].click()
         self.fill_address_form(address)
         self.address_cache = None
 
