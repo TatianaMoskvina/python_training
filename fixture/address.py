@@ -1,4 +1,5 @@
 from model.address import Address
+import re
 
 class AddressHelper:
 
@@ -68,6 +69,10 @@ class AddressHelper:
             wd.find_element_by_name("email").click()
             wd.find_element_by_name("email").clear()
             wd.find_element_by_name("email").send_keys(address.email)
+        if address.email is not None:
+            wd.find_element_by_name("phone2").click()
+            wd.find_element_by_name("phone2").clear()
+            wd.find_element_by_name("phone2").send_keys(address.email)
 
     def open_home_page(self):
         wd = self.app.wd
@@ -119,5 +124,35 @@ class AddressHelper:
             for element in wd.find_elements_by_name("entry"):
                 cells = element.find_elements_by_tag_name("td")
                 id = element.find_element_by_name("selected[]").get_attribute("value")
-                self.address_cache.append(Address(last_name=cells[1].text,first_name=cells[2].text, id=id))
+                last_name = cells[1].text
+                first_name = cells[2].text
+                all_phones = cells[5].text.splitlines()
+                self.address_cache.append(Address(last_name=last_name, first_name=first_name, id=id, home=all_phones[0], mobile=all_phones[1], work=all_phones[2], secondaryphone=all_phones[3]))
         return list(self.address_cache)
+
+    def get_address_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.select_address_by_index(index)
+        wd.find_elements_by_css_selector("img[alt='Edit']")[index].click()
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        home = wd.find_element_by_name("home").get_attribute("value")
+        work = wd.find_element_by_name("work").get_attribute("value")
+        mobile = wd.find_element_by_name("mobile").get_attribute("value")
+        secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
+        return Address(first_name=firstname, last_name=lastname, id=id, home=home, work=work, mobile=mobile, secondaryphone=secondaryphone)
+
+    def get_address_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_home_page()
+        wd.find_elements_by_css_selector('img[alt="Details"]')[index].click()
+        text = wd.find_element_by_id("content").text
+        home = re.search("H: (.*)", text).group(1)
+        work = re.search("W: (.*)", text).group(1)
+        mobile = re.search("M: (.*)", text).group(1)
+        secondaryphone = re.search("P: (.*)", text).group(1)
+        return Address(home=home, work=work, mobile=mobile,
+                       secondaryphone=secondaryphone)
+
+
