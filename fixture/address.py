@@ -70,6 +70,14 @@ class AddressHelper:
             wd.find_element_by_name("email").clear()
             wd.find_element_by_name("email").send_keys(address.email)
         if address.email is not None:
+            wd.find_element_by_name("email2").click()
+            wd.find_element_by_name("email2").clear()
+            wd.find_element_by_name("email2").send_keys(address.email)
+        if address.email2 is not None:
+            wd.find_element_by_name("email3").click()
+            wd.find_element_by_name("email3").clear()
+            wd.find_element_by_name("email3").send_keys(address.email)
+        if address.email3 is not None:
             wd.find_element_by_name("phone2").click()
             wd.find_element_by_name("phone2").clear()
             wd.find_element_by_name("phone2").send_keys(address.email)
@@ -128,7 +136,8 @@ class AddressHelper:
                 last_name = cells[1].text
                 first_name = cells[2].text
                 all_phones = cells[5].text
-                self.address_cache.append(Address(last_name=last_name, first_name=first_name, id=id, all_phones_from_home_page=all_phones))
+                all_emails = cells[4].text
+                self.address_cache.append(Address(last_name=last_name, first_name=first_name, id=id, all_phones_from_home_page=all_phones, all_emails_from_home_page=all_emails))
         return list(self.address_cache)
 
     def get_address_info_from_edit_page(self, index):
@@ -142,7 +151,10 @@ class AddressHelper:
         work = wd.find_element_by_name("work").get_attribute("value")
         mobile = wd.find_element_by_name("mobile").get_attribute("value")
         secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
-        return Address(first_name=firstname, last_name=lastname, id=id, home=home, work=work, mobile=mobile, secondaryphone=secondaryphone)
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
+        return Address(first_name=firstname, last_name=lastname, id=id, home=home, work=work, mobile=mobile, secondaryphone=secondaryphone, email=email, email2=email2, email3=email3)
 
     def get_address_from_view_page(self, index):
         wd = self.app.wd
