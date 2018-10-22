@@ -107,6 +107,7 @@ class AddressHelper:
 
     def select_address_by_index(self, index):
         wd = self.app.wd
+        self.open_home_page()
         wd.find_elements_by_name("selected[]")[index].click()
 
     def count(self):
@@ -126,8 +127,8 @@ class AddressHelper:
                 id = element.find_element_by_name("selected[]").get_attribute("value")
                 last_name = cells[1].text
                 first_name = cells[2].text
-                all_phones = cells[5].text.splitlines()
-                self.address_cache.append(Address(last_name=last_name, first_name=first_name, id=id, home=all_phones[0], mobile=all_phones[1], work=all_phones[2], secondaryphone=all_phones[3]))
+                all_phones = cells[5].text
+                self.address_cache.append(Address(last_name=last_name, first_name=first_name, id=id, all_phones_from_home_page=all_phones))
         return list(self.address_cache)
 
     def get_address_info_from_edit_page(self, index):
